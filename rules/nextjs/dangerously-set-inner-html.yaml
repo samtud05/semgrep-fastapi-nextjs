@@ -1,0 +1,20 @@
+rules:
+  - id: nextjs-dangerously-set-inner-html-dynamic
+    languages: [tsx, typescript, javascript]
+    severity: ERROR
+    message: >
+      dangerouslySetInnerHTML is set from a non-literal value. If any part is
+      user-controlled this is stored/reflected XSS. Render text as children, or
+      sanitize with DOMPurify before injecting HTML.
+    metadata:
+      category: security
+      cwe: "CWE-79: Cross-site Scripting (XSS)"
+      owasp: "A03:2021 - Injection"
+      references:
+        - https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html
+    patterns:
+      - pattern: 'dangerouslySetInnerHTML={{ __html: $HTML }}'
+      - metavariable-pattern:
+          metavariable: $HTML
+          patterns:
+            - pattern-not-regex: '^["''`]'

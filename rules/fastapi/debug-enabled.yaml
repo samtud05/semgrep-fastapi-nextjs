@@ -1,0 +1,14 @@
+rules:
+  - id: fastapi-debug-true
+    languages: [python]
+    severity: WARNING
+    message: >
+      debug=True exposes stack traces and internal details in error responses.
+      Never ship it enabled; drive it from an environment flag that defaults off.
+    metadata:
+      category: security
+      cwe: "CWE-489: Active Debug Code"
+      owasp: "A05:2021 - Security Misconfiguration"
+    pattern-either:
+      - pattern: FastAPI(..., debug=True, ...)
+      - pattern: uvicorn.run(..., debug=True, ...)

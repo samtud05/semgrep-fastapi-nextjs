@@ -1,0 +1,4 @@
+.semgrep/
+*.pyc
+__pycache__/
+.venv/

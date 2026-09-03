@@ -1,0 +1,13 @@
+name: semgrep
+on: [push, pull_request]
+
+jobs:
+  test-rules:
+    runs-on: ubuntu-latest
+    container: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v4
+      # verify the rules still fire correctly on their test cases
+      - run: semgrep --test --config rules/ tests/
+      # then run them on the repo itself, failing on ERROR findings
+      - run: semgrep --config rules/ --error --severity ERROR .

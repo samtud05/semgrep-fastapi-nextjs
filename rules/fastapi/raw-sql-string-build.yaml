@@ -1,0 +1,20 @@
+rules:
+  - id: fastapi-sqlalchemy-text-fstring
+    languages: [python]
+    severity: ERROR
+    message: >
+      SQL is built with an f-string or string concatenation and handed to
+      text()/execute(). If any interpolated value is user-controlled this is a
+      SQL injection. Use bound parameters: text("... WHERE id = :id"), {"id": id}.
+    metadata:
+      category: security
+      cwe: "CWE-89: SQL Injection"
+      owasp: "A03:2021 - Injection"
+      references:
+        - https://docs.sqlalchemy.org/en/20/core/connections.html#sending-parameters
+    pattern-either:
+      - pattern: text(f"...")
+      - pattern: $CONN.execute(f"...")
+      - pattern: $CONN.execute(text(f"..."))
+      - pattern: text("..." + $X)
+      - pattern: $CONN.execute("..." + $X)
