@@ -1,6 +1,6 @@
 rules:
   - id: nextjs-ssrf-server-fetch-from-request
-    languages: [tsx, typescript, javascript]
+    languages: [typescript, javascript]
     severity: WARNING
     message: >
       Server-side fetch() targets a URL taken directly from the request. If the

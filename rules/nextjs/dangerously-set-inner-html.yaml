@@ -1,6 +1,6 @@
 rules:
   - id: nextjs-dangerously-set-inner-html-dynamic
-    languages: [tsx, typescript, javascript]
+    languages: [typescript, javascript]
     severity: ERROR
     message: >
       dangerouslySetInnerHTML is set from a non-literal value. If any part is
@@ -13,8 +13,6 @@ rules:
       references:
         - https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html
     patterns:
-      - pattern: 'dangerouslySetInnerHTML={{ __html: $HTML }}'
-      - metavariable-pattern:
-          metavariable: $HTML
-          patterns:
-            - pattern-not-regex: '^["''`]'
+      - pattern: '<$EL ... dangerouslySetInnerHTML={{ __html: $HTML }} ... />'
+      - pattern-not: '<$EL ... dangerouslySetInnerHTML={{ __html: "..." }} ... />'
+      - pattern-not: '<$EL ... dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(...) }} ... />'
